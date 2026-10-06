@@ -1,4 +1,7 @@
 <title>Idea Factory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..900&family=Mulish:wght@400;500;600;700;800&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
   :root{
     /* light palette (defined complete, up front) */
@@ -29,9 +32,9 @@
     --shadow-sm:5px 6px 0 rgba(24,18,38,.10);
     --ring: rgba(91,52,232,.35);
 
-    --font-display:"Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
-    --font-body:"Figtree", system-ui, -apple-system, sans-serif;
-    --font-hand:"Caveat", "Comic Sans MS", cursive;
+    --font-display:"Fraunces", Georgia, "Times New Roman", serif;
+    --font-body:"Mulish", system-ui, -apple-system, sans-serif;
+    --font-hand:"Patrick Hand", "Comic Sans MS", cursive;
     --font-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
   }
   :root:not([data-theme="light"]){
@@ -129,6 +132,8 @@
     text-decoration:none;color:var(--ink-soft);padding:6px 10px;border-radius:8px;
   }
   .nav-links a:hover{color:var(--build);background:var(--build-soft)}
+  .nav-links a.nav-resume{color:var(--ink);border:2px solid var(--ink);background:var(--spark);font-weight:600}
+  .nav-links a.nav-resume:hover{color:var(--ink);background:var(--spark);transform:translateY(-1px)}
   .theme-btn{
     font-family:var(--font-mono);font-size:12px;border:2px solid var(--ink);background:var(--surface);
     color:var(--ink);border-radius:9px;padding:6px 10px;cursor:pointer;line-height:1;
@@ -227,9 +232,29 @@
   .step p{color:var(--ink-soft);font-size:15.5px}
   .step .ic{position:absolute;top:20px;right:20px;width:34px;height:34px}
 
-  /* build cards */
-  .builds{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-  @media(max-width:760px){.builds{grid-template-columns:1fr}}
+  /* build cards — carousel */
+  .carousel{position:relative}
+  .car-track{
+    display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+    padding:6px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .car-track::-webkit-scrollbar{display:none}
+  .car-track > .build{flex:0 0 min(440px,86%);scroll-snap-align:start}
+  .car-btn{
+    position:absolute;top:calc(50% - 7px);transform:translateY(-50%);z-index:6;
+    width:46px;height:46px;border-radius:50%;border:2.5px solid var(--ink);background:var(--surface);
+    color:var(--ink);cursor:pointer;font-family:var(--font-display);font-size:26px;line-height:1;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);transition:transform .08s ease,background .15s ease;
+  }
+  .car-btn:hover{background:var(--spark)}
+  .car-btn:active{transform:translateY(-50%) scale(.94)}
+  .car-btn:disabled{opacity:.3;cursor:default;background:var(--surface)}
+  .car-btn.prev{left:-12px}
+  .car-btn.next{right:-12px}
+  @media(max-width:560px){.car-btn{width:40px;height:40px;font-size:22px}.car-btn.prev{left:-6px}.car-btn.next{right:-6px}}
+  .car-dots{display:flex;gap:9px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+  .car-dot{width:10px;height:10px;border-radius:50%;background:transparent;border:2px solid var(--ink-faint);cursor:pointer;padding:0;transition:background .15s ease,border-color .15s ease}
+  .car-dot.active{background:var(--build);border-color:var(--build)}
   .build{
     background:var(--surface);border:2.5px solid var(--ink);border-radius:18px;padding:26px;
     box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;
@@ -374,6 +399,7 @@
       <a href="#backlog">Backlog</a>
       <a href="#about">About</a>
       <a href="#contact" class="keep">Say&nbsp;hi</a>
+      <a href="resume.pdf" target="_blank" rel="noopener" class="keep nav-resume">Resume</a>
     </div>
     <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">◐</button>
   </div>
@@ -390,7 +416,7 @@
     <div class="eyebrow-row">
       <span class="eyebrow">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-        Software engineer &amp; serial idea-haver
+        Software engineer · Cornell M.Eng ’27
       </span>
       <a class="hero-avail" href="#contact">
         <span class="avail-dot"></span>Open to full-time AI roles
@@ -399,15 +425,15 @@
 
     <h1>
       I can't stop having<br>
-      <span class="hl">ideas<svg class="scribble" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 13 C 70 4, 150 4, 210 9 S 285 16, 296 8" stroke="var(--spark)" stroke-width="6" fill="none" stroke-linecap="round"/></svg></span>
-      — so&nbsp;I <span class="rotator" id="rotator">ship them.</span>
+      <span class="hl">ideas,<svg class="scribble" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 13 C 70 4, 150 4, 210 9 S 285 16, 296 8" stroke="var(--spark)" stroke-width="6" fill="none" stroke-linecap="round"/></svg></span>
+      so&nbsp;I <span class="rotator" id="rotator">ship them.</span>
     </h1>
 
     <p class="lede">
-      I'm <b>Shrijani</b> — a full-stack + applied-AI engineer who treats every
-      "wait, what if…" as a to-do item. I spent a year and a half shipping recommendation
-      and marketing systems at <b>Amazon</b>, I'm now doing my M.Eng at <b>Cornell</b> — currently
-      teaching robots to be proactive and polite — and on the side I turn half-formed ideas into apps people actually use.
+      I'm <b>Shrijani</b>, a full-stack and applied AI engineer. I spent a year and a half
+      building recommendation and marketing systems at <b>Amazon</b>. Now I'm doing my M.Eng at
+      <b>Cornell</b>, where my research is on robots that act proactively and know how to be polite.
+      Outside of that, I build whatever idea I can't stop thinking about.
     </p>
 
     <div class="hero-cta">
@@ -438,15 +464,15 @@
             <span class="live"><span class="blip"></span>Currently · Cornell M.Eng</span>
             <h3>Proactive Robot Behavior</h3>
             <div class="where">Research project · Cornell University</div>
-            <p class="q">“Given what a robot sees and hears, can it read the room — and act before it's asked?”</p>
+            <p class="q">“Can a robot pick up on what people mean, not just what they say, and help before it's asked?”</p>
             <div class="pts">
               <div class="pt">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v3M4.5 8l2 2M19.5 8l-2 2M3 15h3M18 15h3" stroke="var(--spark)" stroke-width="2" stroke-linecap="round"/><rect x="7" y="9" width="10" height="9" rx="2" stroke="var(--build)" stroke-width="2"/></svg>
-                <span>Using <b>visual and language cues</b>, can a robot understand <b>implicit</b> language and actions — the things people imply but never spell out — and take proactive action on them?</span>
+                <span>Using <b>visual and language cues</b>, can a robot understand <b>implicit</b> language and actions, the things people hint at without saying outright, and act on them on its own?</span>
               </div>
               <div class="pt">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="var(--pop)" stroke-width="2"/><path d="M4 19a5 5 0 0 1 10 0M16 11l2 2 4-4" stroke="var(--pop)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Training robots to behave <b>socially</b> from human egocentric + robot egocentric data — so a robot knows when to <b>ask for help</b>, and to <b>say thanks</b> (and "have a great day") once it gets it.</span>
+                <span>Training robots on human and robot egocentric data so they behave <b>socially</b>: knowing when to <b>ask for help</b>, then <b>saying thanks</b> and "have a great day" once someone helps.</span>
               </div>
             </div>
           </div>
@@ -464,7 +490,7 @@
                 <path d="M78 140h44M78 152h30" stroke="var(--ink-faint)" stroke-width="3" stroke-linecap="round"/>
                 <g><path d="M150 118q22-4 30 10" stroke="var(--mint)" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M176 122l6 6-8 3" stroke="var(--mint)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
               </svg>
-              <p class="say">“thanks — have a great day!”</p>
+              <p class="say">“Thanks! Have a great day.”</p>
             </div>
           </div>
         </div>
@@ -479,25 +505,25 @@
         <span class="sec-num">02</span>
         <h2>How my brain works</h2>
       </div>
-      <p class="sec-sub">Every project I've built runs through the same little loop. It's less "genius flash" and more "stubborn refusal to let a good idea die in my notes app."</p>
+      <p class="sec-sub">Most of my projects go through the same three steps.</p>
       <div class="pipe">
         <div class="step">
           <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z" stroke="var(--spark)" stroke-width="2" stroke-linejoin="round"/><path d="M9 20h6M10 22h4" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></svg>
           <div class="n">1</div>
           <h3>Spark</h3>
-          <p>Notice a friction nobody else is annoyed by yet. "Why does Alexa forget everything?" "Why is my camera roll a graveyard?" Write it down before it escapes.</p>
+          <p>I notice something that bugs me. Why does Alexa forget what I told it yesterday? Why do I never look at my trip photos again? I write it down.</p>
         </div>
         <div class="step">
           <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M4 20l4-1 10-10-3-3L5 16l-1 4Z" stroke="var(--pop)" stroke-width="2" stroke-linejoin="round"/><path d="M14 6l3 3" stroke="var(--ink)" stroke-width="2"/></svg>
           <div class="n">2</div>
           <h3>Sketch</h3>
-          <p>Pin down the real problem, draw the pipeline, argue with myself about the architecture. Figure out the smallest thing that proves the idea is worth it.</p>
+          <p>I figure out the actual problem, sketch the pipeline, and work out the smallest version that would tell me if the idea is any good.</p>
         </div>
         <div class="step">
           <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M5 15l7-13 7 13-7 4-7-4Z" stroke="var(--build)" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <div class="n">3</div>
           <h3>Ship</h3>
-          <p>Actually build it — frontend, backend, the messy AI glue in between — and put it in front of real people. A prototype in beta beats a perfect idea in my head.</p>
+          <p>I build it end to end, frontend, backend, and the AI parts, and get it in front of people as early as I can.</p>
         </div>
       </div>
     </div>
@@ -510,9 +536,12 @@
         <span class="sec-num">03</span>
         <h2>Ideas that made it out</h2>
       </div>
-      <p class="sec-sub">Four favorites — the ones that went from a note to a running thing. Every metric here is real; I don't ship numbers I can't back up.</p>
+      <p class="sec-sub">Projects that made it past the idea stage.</p>
 
-      <div class="builds">
+      <div class="carousel">
+        <button class="car-btn prev" id="buildPrev" aria-label="Previous project">‹</button>
+        <button class="car-btn next" id="buildNext" aria-label="Next project">›</button>
+        <div class="car-track" id="buildTrack">
         <!-- Pixory -->
         <article class="build">
           <div class="topline" style="background:var(--pop)"></div>
@@ -521,7 +550,7 @@
             <span class="badge beta">Private beta · 6 users</span>
           </div>
           <h3>Pixory</h3>
-          <p class="desc">Your camera roll, edited into a story. Point it at 300 messy trip photos and it curates a captioned, story-sequenced highlight reel. A selection funnel buckets photos by time &amp; place, scores each across <b>9 visual dimensions</b>, and hands the top 30 to GPT-4o to arrange and caption. The kicker: it learns your taste — those 9 weights adapt from your edits and personalize within ~5 uses.</p>
+          <p class="desc">An iOS app that turns a trip's worth of photos (around 300) into a captioned highlight reel told in story order. It groups photos by time and place, scores each one on <b>9 visual dimensions</b>, and sends the top 30 to GPT-4o to pick, order, and caption. When you swap photos, it adjusts those 9 weights, so after about 5 uses it starts choosing the way you would.</p>
           <div class="chips">
             <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">Node · Fastify</span><span class="chip">Python CV</span><span class="chip">GPT-4o</span><span class="chip">OpenCV · InsightFace</span>
           </div>
@@ -536,7 +565,7 @@
             <span class="badge win">★ Best Design · 70+ teams</span>
           </div>
           <h3>ContextIQ</h3>
-          <p class="desc">An ambient-memory layer for Alexa+. It ingests your day from a Bee Pioneer wearable and surfaces the right history on demand — cutting up to 5 follow-up questions per vague request. Under the hood: a <b>Graph RAG</b> pipeline on Bedrock + Neptune that fuses semantic search with graph expansion and reranks with Cohere, feeding a Nova Sonic voice agent that acts across 8 tools.</p>
+          <p class="desc">A memory layer for Alexa+. It pulls in conversations from a Bee Pioneer wearable and brings up relevant history when you ask for something vague, saving up to 5 follow-up questions. Retrieval is a <b>Graph RAG</b> pipeline on Bedrock and Neptune that combines semantic search with graph expansion and reranks with Cohere. A Nova Sonic voice agent uses that context across 8 tools.</p>
           <div class="chips">
             <span class="chip">Bedrock</span><span class="chip">Neptune</span><span class="chip">Graph RAG</span><span class="chip">Nova Sonic</span><span class="chip">Strands SDK</span><span class="chip">AWS CDK</span>
           </div>
@@ -551,11 +580,26 @@
             <span class="badge team">Team of 4</span>
           </div>
           <h3>Labmate</h3>
-          <p class="desc">An always-on <b>local</b> research agent that keeps unpublished data off cloud AI entirely. I built the Hermes agent — including a deterministic verification skill that recomputes each research claim in Python/pandas and labels it <i>supported</i>, <i>conflicting</i>, or <i>unverifiable</i> — plus an always-on watcher + priority scheduler that re-checks claims the moment the data changes.</p>
+          <p class="desc">A research agent that runs <b>locally</b>, so unpublished data never goes to a cloud AI service. I built the Hermes agent, including a verification skill that recomputes each research claim in Python/pandas and marks it <i>supported</i>, <i>conflicting</i>, or <i>unverifiable</i>. I also built the always-on mode: a file watcher and scheduler that re-check claims when the data changes.</p>
           <div class="chips">
             <span class="chip">Hermes · Qwen</span><span class="chip">Sandboxed LLM</span><span class="chip">Python · pandas</span><span class="chip">MongoDB vector</span><span class="chip">Slack</span>
           </div>
           <a class="repo" href="https://github.com/KrishivVora/DELL-x-NVIDIA-Hackathon" target="_blank" rel="noopener">↗ github.com/KrishivVora/DELL-x-NVIDIA-Hackathon</a>
+        </article>
+
+        <!-- Slide to Lesson -->
+        <article class="build">
+          <div class="topline" style="background:var(--build)"></div>
+          <div class="kicker">
+            <span class="meta">Codex skill · 2026</span>
+            <span class="badge beta">Open source · MIT</span>
+          </div>
+          <h3>Slide to Lesson</h3>
+          <p class="desc">A Codex skill that turns PDF lecture slides into an interactive lecture video, with narration, animations where a concept needs one, and <b>quizzes</b> between sections. You write narration per slide in JSON. It generates the speech, trims animations to fit, and builds a chaptered MP4 and an HTML player that pauses for the quizzes. Everything runs locally unless you choose an external voice.</p>
+          <div class="chips">
+            <span class="chip">Python</span><span class="chip">Swift</span><span class="chip">FFmpeg</span><span class="chip">PDFKit</span><span class="chip">ElevenLabs</span><span class="chip">Codex skill</span>
+          </div>
+          <a class="repo" href="https://github.com/Shrijaniv/slide-to-lesson" target="_blank" rel="noopener">↗ github.com/Shrijaniv/slide-to-lesson</a>
         </article>
 
         <!-- Saavii -->
@@ -566,13 +610,15 @@
             <span class="badge concept">Cooking</span>
           </div>
           <h3>Saavii</h3>
-          <p class="desc">An AI planning system for college students that unifies Gmail, Google Calendar, and Canvas into one persistent <b>Life Graph</b> — turning scattered signals into priorities and adaptive daily plans. The interesting part is the orchestration + memory architecture: natural language in, structured actions out, validated by deterministic services so the AI can't quietly hallucinate your week.</p>
+          <p class="desc">A planning app for college students that pulls Gmail, Google Calendar, and Canvas into one <b>Life Graph</b> and builds daily plans from it. Requests in plain language become structured actions, and deterministic services check those actions before anything changes, so the model can't make up events in your schedule.</p>
           <div class="chips">
             <span class="chip">LLM orchestration</span><span class="chip">Life Graph</span><span class="chip">Gmail · Calendar · Canvas</span><span class="chip">Persistent memory</span>
           </div>
-          <span class="repo" style="color:var(--ink-faint)">In active design — ask me about the moat thesis 🙂</span>
+          <span class="repo" style="color:var(--ink-faint)">Still in design</span>
         </article>
+        </div>
       </div>
+      <div class="car-dots" id="buildDots"></div>
     </div>
   </section>
 
@@ -581,9 +627,9 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-num">04</span>
-        <h2>The day job (where ideas met 6,200 RPS)</h2>
+        <h2>At Amazon</h2>
       </div>
-      <p class="sec-sub">For a year and a half at Amazon I built recommendation &amp; marketing systems on the Health Services GAME team — full-stack, from React widgets to event-driven AI pipelines. A few things I'm proud of:</p>
+      <p class="sec-sub">I worked on the Health Services GAME team for a year and a half, building recommendation and marketing systems across the stack, from React widgets to event-driven AI pipelines.</p>
 
       <div class="amz">
         <div class="amz-head">
@@ -595,14 +641,14 @@
         </div>
         <div class="stats">
           <div class="stat"><div class="big">13% → 50%+</div><div class="lbl">Widget show rate, after I built an automated refresh algorithm around a ranking system's learning behavior.</div></div>
-          <div class="stat"><div class="big">+800%</div><div class="lbl">Impressions from campaign automation across 80+ widgets — while cutting 16+ hours of manual work every month.</div></div>
+          <div class="stat"><div class="big">+800%</div><div class="lbl">Impressions after I automated campaigns across 80+ widgets, which also removed 16+ hours of manual work a month.</div></div>
           <div class="stat"><div class="big">⅓ – ½</div><div class="lbl">Off multi-month project timelines, using internal AI agents I built with MCP tool integrations.</div></div>
         </div>
         <div class="amz-more">
-          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--pop)" stroke-width="2"/><path d="M12 7v5l3 2" stroke="var(--pop)" stroke-width="2" stroke-linecap="round"/></svg><span>Architected an event-driven <b>EventBridge → Lambda → Bedrock</b> pipeline that generates personalized health recommendations asynchronously — keeping LLM inference off the customer request path at <b>6,200 peak RPS</b>.</span></div>
-          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="var(--mint)" stroke-width="2"/></svg><span>Built an <b>LLM-as-judge</b> evaluation stage that gates every recommendation on PHI exposure, unsupported health assumptions, legal requirements, and clinical complexity before it ships.</span></div>
-          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6" stroke="var(--build)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ran multiple <b>A/B experiments</b> end-to-end — defining metrics, instrumenting with BI teams, and building dashboards to guide rollout decisions.</span></div>
-          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="var(--spark)" stroke-width="2"/><path d="M8 20h8M7 9l2 2-2 2M12 13h4" stroke="var(--spark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Shipped customer-facing widgets on the Amazon shopping portal in <b>React/TypeScript</b> — video modules, a video-plus-recommendation carousel, and feeder pills layered onto existing carousels.</span></div>
+          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--pop)" stroke-width="2"/><path d="M12 7v5l3 2" stroke="var(--pop)" stroke-width="2" stroke-linecap="round"/></svg><span>Architected an event-driven <b>EventBridge → Lambda → Bedrock</b> pipeline that generates personalized health recommendations asynchronously, so LLM inference stays off the customer request path at <b>6,200 peak RPS</b>.</span></div>
+          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="var(--mint)" stroke-width="2"/></svg><span>Built an <b>LLM-as-judge</b> step that checks each recommendation for PHI exposure, unsupported health assumptions, legal requirements, and clinical complexity before it reaches a customer.</span></div>
+          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6" stroke="var(--build)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ran <b>A/B experiments</b> end to end: defined the metrics, worked with BI to instrument them, and built the dashboards we used to decide on rollouts.</span></div>
+          <div class="row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="var(--spark)" stroke-width="2"/><path d="M8 20h8M7 9l2 2-2 2M12 13h4" stroke="var(--spark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Shipped customer-facing widgets on the Amazon shopping portal in <b>React/TypeScript</b>, including video modules, a video and recommendation carousel, and feeder pills on existing carousels.</span></div>
         </div>
       </div>
     </div>
@@ -615,10 +661,10 @@
         <span class="sec-num">05</span>
         <h2>The idea backlog</h2>
       </div>
-      <p class="sec-sub">A living wall of things I've prototyped, half-built, or can't stop thinking about. Some shipped. Some are waiting for a free weekend. This is the honest picture of a brain that won't quit.</p>
+      <p class="sec-sub">Things I've prototyped, half-built, or keep coming back to. A couple shipped. The rest are waiting for a free weekend.</p>
       <div class="backlog">
-        <div class="note"><span class="pin"></span>Tic-tac-toe you play with your <b>voice</b>. <span class="status">✳ Shipped — VoiceTacToe, on Google Play</span></div>
-        <div class="note"><span class="pin"></span>A team of AI agents that runs the whole <b>SDLC</b> — gatherer → planner → designer → dev → reviewer → QA. <span class="status">Prototyped w/ Claude Code + gh</span></div>
+        <div class="note"><span class="pin"></span>Tic-tac-toe you play with your <b>voice</b>. <span class="status">✳ Shipped as VoiceTacToe on Google Play</span></div>
+        <div class="note"><span class="pin"></span>A team of AI agents that runs the whole <b>SDLC</b>: requirements, planning, design, dev, review, QA. <span class="status">Prototyped w/ Claude Code + gh</span></div>
         <div class="note"><span class="pin"></span>Turn a boring lecture into a <b>knowledge graph</b> you can walk through as a story. <span class="status">Concept + prototype spec</span></div>
         <div class="note"><span class="pin"></span>A RAG platform so PMs can <b>ask</b> customer feedback questions instead of reading every response. <span class="status">✳ Built at Amazon (intern)</span></div>
         <div class="note"><span class="pin"></span>Smart-home <b>Alexa skills</b> for the things I wish my house just did. <span class="status">Built w/ Alexa Skills Kit + SAM</span></div>
@@ -635,13 +681,13 @@
       </div>
       <div class="panel" style="margin-bottom:22px">
         <div class="tiny">Teaching &amp; giving back</div>
-        <h3>I like handing the spark to other people too</h3>
+        <h3>Teaching and mentoring</h3>
         <div class="tl tl-grid" style="margin-top:20px">
-            <div class="item"><span class="dot"></span><div><h4>Teaching Assistant · CS 2110, OOP in Java</h4><p class="when">Cornell · 300+ student course</p><p>Lead discussions &amp; office hours, coordinate grading across all TAs for consistency — and built in-browser editable, runnable code blocks so students can write Java right on the lecture pages.</p></div></div>
+            <div class="item"><span class="dot"></span><div><h4>Teaching Assistant · CS 2110, OOP in Java</h4><p class="when">Cornell · 300+ student course</p><p>Lead discussions &amp; office hours, coordinate grading across all TAs, and built editable code blocks so students can write and run Java on the lecture pages.</p></div></div>
             <div class="item"><span class="dot"></span><div><h4>Learning Assistant · ICS 32</h4><p class="when">UC Irvine · 2023–2024</p><p>Guided students through their lab work and homework assignments and held regular office hours.</p></div></div>
-            <div class="item"><span class="dot"></span><div><h4>CodePath Tech Fellow</h4><p>Mentored and taught CS to students earlier in the journey than me.</p></div></div>
-            <div class="item"><span class="dot" style="background:var(--pop)"></span><div><h4>Design Your Careers</h4><p class="when">2020–2021 · 100+ students · Presidential Volunteer Service Award</p><p>During lockdown, I designed and taught remote workshops end to end — syllabus, slides, and instruction — on beginner <b>French</b>, <b>trigonometry</b>, and <b>app development</b>, each made age-appropriate to keep kids engaged.</p></div></div>
-            <div class="item"><span class="dot" style="background:var(--spark)"></span><div><h4>Mentor · Junior High VEX Robotics Team</h4><p class="when">2018–2021</p><p>Mentored my local junior-high robotics club through designing, building, and coding their robots — and went to competitions with them. (Yes, I've been at the robot thing for a while.)</p></div></div>
+            <div class="item"><span class="dot"></span><div><h4>CodePath Tech Fellow</h4><p>Mentored and taught CS students.</p></div></div>
+            <div class="item"><span class="dot" style="background:var(--pop)"></span><div><h4>Design Your Careers</h4><p class="when">2020–2021 · 100+ students · Presidential Volunteer Service Award</p><p>During lockdown I ran remote workshops for kids on beginner <b>French</b>, <b>trigonometry</b>, and <b>app development</b>. I wrote the syllabus and slides for each one, taught them, and adjusted the material for each age group.</p></div></div>
+            <div class="item"><span class="dot" style="background:var(--spark)"></span><div><h4>Mentor · Junior High VEX Robotics Team</h4><p class="when">2018–2021</p><p>Mentored my local junior-high robotics club through designing, building, and coding their robots, and went to competitions with them.</p></div></div>
             <div class="item"><span class="dot" style="background:var(--spark)"></span><div><h4>Instructor · Arduino Summer Camp</h4><p class="when">2018</p><p>Taught elementary students the basics of circuits and C, then helped them build and program line-following cars with IR sensors and an Arduino board.</p></div></div>
           </div>
         </div>
@@ -651,8 +697,8 @@
           <div class="tiny">Education</div>
           <h3>Where I learned to build</h3>
           <div class="tl" style="margin-top:18px">
-            <div class="item"><span class="dot" style="background:var(--build)"></span><div><h4>Cornell University — M.Eng, Computer Science</h4><p class="when">Aug 2026 → May 2027 · in progress</p><p>M.Eng project on <b>Proactive Robot Behavior</b> — proactive action from visual + language cues, and social behavior learned from egocentric data.</p><div class="courses"><span class="chip">Robot Perception</span><span class="chip">Systems for Large-Scale ML</span><span class="chip">Systems Programming</span><span class="chip">Frontiers of Computer Vision</span></div></div></div>
-            <div class="item"><span class="dot" style="background:var(--pop)"></span><div><h4>UC Irvine — B.S. Computer Science &amp; Engineering</h4><p class="when">Dec 2024 · GPA 3.8</p></div></div>
+            <div class="item"><span class="dot" style="background:var(--build)"></span><div><h4>Cornell University, M.Eng in Computer Science</h4><p class="when">Aug 2026 → May 2027 · in progress</p><p>M.Eng project on <b>Proactive Robot Behavior</b>.</p><div class="courses"><span class="chip">Robot Perception</span><span class="chip">Systems for Large-Scale ML</span><span class="chip">Systems Programming</span><span class="chip">Frontiers of Computer Vision</span></div></div></div>
+            <div class="item"><span class="dot" style="background:var(--pop)"></span><div><h4>UC Irvine, B.S. in Computer Science &amp; Engineering</h4><p class="when">Dec 2024 · GPA 3.8</p></div></div>
           </div>
         </div>
 
@@ -676,9 +722,10 @@
     <div class="wrap">
       <div class="closing">
         <span class="avail"><span class="avail-dot"></span>Open to full-time roles · graduating May 2027</span>
-        <h2>Point me at a hard problem and a blank canvas.</h2>
-        <p>I'm looking for a full-time role in <b>AI</b> — startup or big tech — where I get the freedom to come up with product ideas and actually build them. If that's the kind of person you're hiring, let's talk.</p>
+        <h2>Looking for my next role</h2>
+        <p>I want a full-time role in <b>AI</b>, at a startup or a big company, where I can come up with product ideas and build them. If your team works that way, I'd like to hear from you.</p>
         <div class="links">
+          <a class="link" href="resume.pdf" target="_blank" rel="noopener">↗ Resume (PDF)</a>
           <a class="link" href="mailto:sv554@cornell.edu">✉ Email me</a>
           <a class="link" href="https://github.com/Shrijaniv" target="_blank" rel="noopener">↗ GitHub</a>
           <a class="link" href="https://linkedin.com/in/shrijanivemulapally" target="_blank" rel="noopener">↗ LinkedIn</a>
@@ -689,7 +736,7 @@
 </main>
 
 <footer>
-  Designed &amp; built with too much coffee and <span class="heart">♥</span> · Shrijani Vemulapally · Seattle → Ithaca
+  Shrijani Vemulapally · Ithaca, NY
 </footer>
 
 <script>
@@ -760,7 +807,7 @@
     {tag:"what if…", text:"your camera roll edited itself into a story?", built:"I built it. It's Pixory."},
     {tag:"what if…", text:"Alexa actually remembered what you told it last week?", built:"ContextIQ. Won Best Design, 70+ teams."},
     {tag:"what if…", text:"your unpublished research never had to touch the cloud to get an AI second opinion?", built:"Built it: Labmate."},
-    {tag:"what if…", text:"your email, calendar, and Canvas just planned your week for you?", built:"Designing it now — Saavii."},
+    {tag:"what if…", text:"your email, calendar, and Canvas just planned your week for you?", built:"Designing it now: Saavii."},
     {tag:"idea #63", text:"a boring lecture, rebuilt into a knowledge graph you can explore like a story.", built:""},
     {tag:"idea #12", text:"tic-tac-toe you play entirely with your voice.", built:"Shipped. It's on Google Play."},
     {tag:"idea #88", text:"a whole team of AI agents that quietly runs your SDLC end to end.", built:"Prototyped with Claude Code."},
@@ -797,5 +844,40 @@
   // show one at rest so the section isn't empty on load
   spark();
   count = 0; counterEl.textContent = 0; // don't count the auto-load one
+
+  /* ---- builds carousel ---- */
+  var track = document.getElementById('buildTrack');
+  var prevBtn = document.getElementById('buildPrev');
+  var nextBtn = document.getElementById('buildNext');
+  var dotsWrap = document.getElementById('buildDots');
+  if(track && prevBtn && nextBtn){
+    var cards = Array.prototype.slice.call(track.querySelectorAll('.build'));
+    function cardStep(){
+      if(cards.length < 2) return track.clientWidth;
+      return cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+    }
+    // build dots
+    cards.forEach(function(c, i){
+      var d = document.createElement('button');
+      d.className = 'car-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Go to project ' + (i + 1));
+      d.addEventListener('click', function(){ track.scrollTo({left: cardStep() * i, behavior: 'smooth'}); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+    function current(){ return Math.round(track.scrollLeft / cardStep()); }
+    function sync(){
+      var idx = current();
+      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      prevBtn.disabled = track.scrollLeft < 8;
+      nextBtn.disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 8;
+    }
+    prevBtn.addEventListener('click', function(){ track.scrollBy({left: -cardStep(), behavior: 'smooth'}); });
+    nextBtn.addEventListener('click', function(){ track.scrollBy({left: cardStep(), behavior: 'smooth'}); });
+    var raf;
+    track.addEventListener('scroll', function(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); });
+    window.addEventListener('resize', sync);
+    sync();
+  }
 })();
 </script>

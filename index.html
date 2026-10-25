@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Idea Factory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -419,7 +422,7 @@
         Software engineer · Cornell M.Eng ’27
       </span>
       <a class="hero-avail" href="#contact">
-        <span class="avail-dot"></span>Open to full-time AI roles
+        <span class="avail-dot"></span>Open to full-time AI &amp; robotics roles
       </a>
     </div>
 
@@ -463,7 +466,7 @@
           <div>
             <span class="live"><span class="blip"></span>Currently · Cornell M.Eng</span>
             <h3>Proactive Robot Behavior</h3>
-            <div class="where">Research project · Cornell University</div>
+            <div class="where">SocialSense · Research Assistant, Fussell Lab · Cornell</div>
             <p class="q">“Can a robot pick up on what people mean, not just what they say, and help before it's asked?”</p>
             <div class="pts">
               <div class="pt">
@@ -473,6 +476,10 @@
               <div class="pt">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="var(--pop)" stroke-width="2"/><path d="M4 19a5 5 0 0 1 10 0M16 11l2 2 4-4" stroke="var(--pop)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span>Training robots on human and robot egocentric data so they behave <b>socially</b>: knowing when to <b>ask for help</b>, then <b>saying thanks</b> and "have a great day" once someone helps.</span>
+              </div>
+              <div class="pt">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="13" height="12" rx="2" stroke="var(--build)" stroke-width="2"/><path d="M16 10l5-3v10l-5-3" stroke="var(--build)" stroke-width="2" stroke-linejoin="round"/><path d="M7 12l2 2 3-4" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>The data side is built: a pipeline that turns <b>in-the-wild robot videos</b> into labeled social episodes (scene cuts, on-screen text, speech), with <b>VLM labels</b> and counterfactual "what it should have done" demos checked against human labels before we trust them.</span>
               </div>
             </div>
           </div>
@@ -570,6 +577,21 @@
             <span class="chip">Bedrock</span><span class="chip">Neptune</span><span class="chip">Graph RAG</span><span class="chip">Nova Sonic</span><span class="chip">Strands SDK</span><span class="chip">AWS CDK</span>
           </div>
           <a class="repo" href="https://github.com/Shrijaniv/ContextIQ" target="_blank" rel="noopener">↗ github.com/Shrijaniv/ContextIQ</a>
+        </article>
+
+        <!-- LiDAR -->
+        <article class="build">
+          <div class="topline" style="background:var(--mint)"></div>
+          <div class="kicker">
+            <span class="meta">Robot Perception · Oct 2026</span>
+            <span class="badge team">Cornell ECE 5240</span>
+          </div>
+          <h3>LiDAR in the Fog</h3>
+          <p class="desc">A simulated planar LiDAR in PyBullet that has to find and locate a target through fog. I modeled the ray geometry, fog attenuation (Beer–Lambert), and noisy returns, then tested how far to trust it: <b>1,000-trial Monte Carlo</b> runs with confidence intervals, a Fisher-information bound on how precisely it can localize, and a check against full 3D ray casts that agreed to within 4–6 cm. Every figure regenerates from code with fixed seeds.</p>
+          <div class="chips">
+            <span class="chip">PyBullet</span><span class="chip">Python</span><span class="chip">Monte Carlo</span><span class="chip">Fisher info · CRLB</span><span class="chip">Matplotlib</span>
+          </div>
+          <span class="repo" style="color:var(--ink-faint)">Course project · code in a private team repo</span>
         </article>
 
         <!-- Labmate -->
@@ -697,7 +719,7 @@
           <div class="tiny">Education</div>
           <h3>Where I learned to build</h3>
           <div class="tl" style="margin-top:18px">
-            <div class="item"><span class="dot" style="background:var(--build)"></span><div><h4>Cornell University, M.Eng in Computer Science</h4><p class="when">Aug 2026 → May 2027 · in progress</p><p>M.Eng project on <b>Proactive Robot Behavior</b>.</p><div class="courses"><span class="chip">Robot Perception</span><span class="chip">Systems for Large-Scale ML</span><span class="chip">Systems Programming</span><span class="chip">Frontiers of Computer Vision</span></div></div></div>
+            <div class="item"><span class="dot" style="background:var(--build)"></span><div><h4>Cornell University, M.Eng in Computer Science</h4><p class="when">Aug 2026 → May 2027 · in progress</p><p>Research assistant in the Fussell Lab, working on <b>Proactive Robot Behavior</b> (SocialSense).</p><div class="courses"><span class="chip">Robot Perception</span><span class="chip">Mobile Autonomous Robots (Spring 2027)</span><span class="chip">Systems for Large-Scale ML</span><span class="chip">Systems Programming</span><span class="chip">Frontiers of Computer Vision</span></div></div></div>
             <div class="item"><span class="dot" style="background:var(--pop)"></span><div><h4>UC Irvine, B.S. in Computer Science &amp; Engineering</h4><p class="when">Dec 2024 · GPA 3.8</p></div></div>
           </div>
         </div>
@@ -706,7 +728,8 @@
           <div class="tiny">Toolkit</div>
           <h3>What I build with</h3>
           <div class="skillset" style="margin-top:18px">
-            <div class="skillrow"><div class="k">Languages</div><div class="v"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">TypeScript</span><span class="chip">C++</span></div></div>
+            <div class="skillrow"><div class="k">Languages</div><div class="v"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">TypeScript</span><span class="chip">C++</span><span class="chip">Rust</span></div></div>
+            <div class="skillrow"><div class="k">Robotics &amp; vision</div><div class="v"><span class="chip">PyBullet · LiDAR sim</span><span class="chip">PyTorch · U-Net</span><span class="chip">OpenCV</span><span class="chip">VLM labeling</span><span class="chip">ffmpeg · Whisper</span></div></div>
             <div class="skillrow"><div class="k">AI &amp; Data</div><div class="v"><span class="chip">LLM apps</span><span class="chip">RAG · Graph RAG</span><span class="chip">LLM eval</span><span class="chip">Vector search</span><span class="chip">Agentic workflows</span></div></div>
             <div class="skillrow"><div class="k">Backend &amp; cloud</div><div class="v"><span class="chip">AWS · Bedrock · CDK</span><span class="chip">Event-driven</span><span class="chip">Distributed systems</span><span class="chip">PostgreSQL · Supabase</span></div></div>
             <div class="skillrow"><div class="k">Frontend &amp; testing</div><div class="v"><span class="chip">React · React Native</span><span class="chip">Expo</span><span class="chip">Playwright</span><span class="chip">Unit · Integration</span></div></div>
@@ -723,7 +746,7 @@
       <div class="closing">
         <span class="avail"><span class="avail-dot"></span>Open to full-time roles · graduating May 2027</span>
         <h2>Looking for my next role</h2>
-        <p>I want a full-time role in <b>AI</b>, at a startup or a big company, where I can come up with product ideas and build them. If your team works that way, I'd like to hear from you.</p>
+        <p>I want a full-time role in <b>AI or robotics</b>, at a startup or a big company, where I can come up with product ideas and build them. If your team works that way, I'd like to hear from you.</p>
         <div class="links">
           <a class="link" href="resume.pdf" target="_blank" rel="noopener">↗ Resume (PDF)</a>
           <a class="link" href="mailto:sv554@cornell.edu">✉ Email me</a>
@@ -813,7 +836,9 @@
     {tag:"idea #88", text:"a whole team of AI agents that quietly runs your SDLC end to end.", built:"Prototyped with Claude Code."},
     {tag:"what if…", text:"photo selection was a personal-taste problem, not a fixed ranking?", built:"That's Pixory's adaptive scoring."},
     {tag:"idea #31", text:"your smart home just did the annoying things before you asked.", built:"Built a few as Alexa skills."},
-    {tag:"idea #99", text:"every AI recommendation had to pass a second AI that fact-checks it first.", built:"That's my LLM-as-judge at Amazon."}
+    {tag:"idea #99", text:"every AI recommendation had to pass a second AI that fact-checks it first.", built:"That's my LLM-as-judge at Amazon."},
+    {tag:"what if…", text:"a robot learned its manners by watching videos of other robots out in the world?", built:"Working on it: SocialSense."},
+    {tag:"what if…", text:"you could prove a robot's LiDAR still works in fog before it leaves the simulator?", built:"Built the sim and the stats for it."}
   ];
   var stage = document.getElementById('ideaStage');
   var btn = document.getElementById('sparkBtn');

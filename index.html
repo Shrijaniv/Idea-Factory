@@ -188,8 +188,6 @@
   .btn-ghost{background:var(--surface);color:var(--ink)}
   .btn-ghost:hover{background:var(--build-soft)}
 
-  .counter{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
-  .counter b{font-family:var(--font-display);font-size:19px;color:var(--ink);font-weight:800}
 
   /* idea generator output */
   .idea-stage{margin-top:34px;min-height:150px;position:relative}
@@ -445,7 +443,6 @@
         Spark a new idea
       </button>
       <a class="btn btn-ghost" href="#builds">See what I've built</a>
-      <span class="counter"><b id="ideaCount">0</b> ideas sparked here so far</span>
     </div>
 
     <div class="idea-stage" id="ideaStage" aria-live="polite"></div>
@@ -842,8 +839,6 @@
   ];
   var stage = document.getElementById('ideaStage');
   var btn = document.getElementById('sparkBtn');
-  var counterEl = document.getElementById('ideaCount');
-  var count = 0;
   var lastIdx = -1;
 
   function spark(){
@@ -851,8 +846,6 @@
     do { idx = Math.floor(Math.random()*ideas.length); } while(idx === lastIdx && ideas.length > 1);
     lastIdx = idx;
     var idea = ideas[idx];
-    count++;
-    counterEl.textContent = count;
 
     var built = idea.built
       ? '<span class="idea-built"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'+idea.built+'</span>'
@@ -868,7 +861,6 @@
   btn.addEventListener('click', spark);
   // show one at rest so the section isn't empty on load
   spark();
-  count = 0; counterEl.textContent = 0; // don't count the auto-load one
 
   /* ---- builds carousel ---- */
   var track = document.getElementById('buildTrack');
